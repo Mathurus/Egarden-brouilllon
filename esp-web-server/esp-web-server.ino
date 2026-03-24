@@ -3,8 +3,8 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
-#define WIFI_SSID ""
-#define WIFI_PASSWORD ""
+#define WIFI_SSID "iPhone de Mathurin"
+#define WIFI_PASSWORD "cocoviens"
 
 WebServer server(80);
 
@@ -23,7 +23,6 @@ void handlePost() {
     DeserializationError error = deserializeJson(doc, body);
 
     if (!error) {
-        etat_moteur1 = doc["etat_moteur1"];
 
         server.send(200, "text/plain", "JSON reçu !");
     } else {
@@ -41,7 +40,11 @@ void pagehhtml() {
         </head>
         <body>
             <h1>ESP32 Server</h1>
-            <p>Température: 22°C</p>
+            <p>Temperrature: )" + String(temperature) + R"(</p>
+            <p>Humidite air : )" + String(airHumidity) + R"(</p>
+            <p>Humidite sol : )" + String(soilHumidity) + R"(</p>
+            <p>Gaz : )" + String(gas) + R"(</p> 
+            <p>Lumunosite : )" + String(light) + R"(</p>
         </body>
         </html>
     )";
@@ -66,7 +69,7 @@ void setup() {
     server.on("/", pagehhtml);
     server.begin();
 
-    String url = "https://your-api.com/sensor?";
+    String url = "https://mleclere-github-io.onrender.com/sensor?";
     url += "airHumidity=" + String(airHumidity);
     url += "&soilHumidity=" + String(soilHumidity);
     url += "&temperature=" + String(temperature);
